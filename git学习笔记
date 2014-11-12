@@ -81,11 +81,61 @@
 
 五.管理修改
 
-   1.git checkout -- file(注意 -- 前后有空格)命令,当你改乱了工作区(没有git add 添加到暂存区)的某个文件时,可以用这个命令直接丢弃刚刚做的修改. 
+   1.git checkout -- file(注意 -- 前后有空格)命令,当你改乱了工作区(没有git add 添加到暂存区)的某个文件时,
+   
+     可以用这个命令直接丢弃刚刚做的修改. 
 
    2.如果在工作区改乱了某个文件的内容,并且还git add 添加到了暂存区,想要丢弃修改需要分两步:
 
-          第一步:git reset HEAD file 回到1(也就是把提交到暂存区的修改,退回到工作区),然后再按照1执行 git chechout -- file 彻底丢弃修改.
+          第一步:git reset HEAD file 回到1(也就是把提交到暂存区的修改,退回到工作区),
+          
+          然后再按照1执行 git chechout -- file 彻底丢弃修改.
 
-   3.如果已经提交(即不仅是git add 添加到了暂存区,而且还git commit 提交到了版本库),不合适的修改到了版本库,想要撤销本次提交,则可按照 git reset --hard [版本id]进行版本回退.------->前提是,本次修改没有提交到远程库.
+   3.如果已经提交(即不仅是git add 添加到了暂存区,而且还git commit 提交到了版本库),
+   
+     不合适的修改到了版本库,想要撤销本次提交,则可按照 git reset --hard [版本id]进行版本回退.
+     
+     ------->前提是,本次修改没有提交到远程库.
+
+   4.git rm 删除文件:一般情况下,在文件管理器中把文件删除(或者用rm命令删除)之后,工作区和版本库就不一致了(用git status可以查看哪些地方不一致).
+
+     此时,如果确定要删除文件,再用 git rm file 命令删掉,并且git commit 提交到版本库.
+     
+     如果是删错了,则可以用git checkout -- file 命令撤销删除操作
+     
+     (实质上,git checkout 使用版本库里的版本替换工作区的版本)
+
+六.远程仓库
+
+    1.初识 GitHub :
+        
+        a.创建SSH Key(GitHub注册略过):首先在用户主目录下查看有无.ssh目录,如果有,        
+        再看看目录下有无 id_rsa 和id_rsa.pub 这两个文件,如果已经有了,
+        可直接跳到下一步;如果没有,则在终端输入命令: ssh-keygen -t rsa -C "youremail@example.com"
+        然后一路回车,使用默认值即可(可以无需设置密码)
+
+        b.登陆GitHub,add ssh key,并在key文本框里粘帖id_rsa_pub文件的内容,完成这些内容以后
+        就可以开始远程仓库的学习了.
+
+    2.添加远程仓库
+
+        a.首先登陆GitHub,然后在右上角找到"Create a new repo"按钮,创建一个新的仓库:
+          
+        b.在本地仓库git_learn(一定要在本地仓库目录下,否则会报错)运行命令:
+           git remote add origin https://github.com/lingdian87/git_learn.git(这个是GitHub下的地址名)
+           这个命令的作用是:在GitHub上新建了一个名为origin(也可以叫别的名)的远程仓库
+           接下来,就可以把本地仓库的所有内容推送到远程库上了
+
+        c.git push -u origin master 这样就把本地库的内容推送到了远程上(实际上是把当前分支master推送到远程)
+          [注意]--->由于远程库是空的,所以第一次推送master分支时,加上了-u参数,这样Git不但
+                    把本地master分支内容推送到远程新的master分支,还会把本地的master分支
+                    和远程的master分支关联起来,以后的推送或拉取时就可以简化命令.
+        从现在起,只要本地做了提交(git commit),就可以通过 git push origin ma 把本地
+        master分支的最新修改推送到GitHub.
+
+      [小结]--->1.要关联一个远程库,用命令 git remote add origin 远程库名(一个地址)
+
+                2.关联后,使用命令git push -u origin master 第一次推送,此后每次本地提交后
+                  使用命令 git push origin master 就可以了.
+
 
