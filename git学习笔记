@@ -122,10 +122,15 @@
         a.首先登陆GitHub,然后在右上角找到"Create a new repo"按钮,创建一个新的仓库:
           
         b.在本地仓库git_learn(一定要在本地仓库目录下,否则会报错)运行命令:
-           git remote add origin https://github.com/lingdian87/git_learn.git(这个是GitHub下的地址名)
-           这个命令的作用是:在GitHub上新建了一个名为origin(也可以叫别的名)的远程仓库
-           接下来,就可以把本地仓库的所有内容推送到远程库上了
+            git remote add origin git@github.com:lingdian87/git_learn.git
+            或者也可以用https://github.com/lingdian87/git_learn.git(这个是GitHub下的地址名)
+            这个命令的作用是:在GitHub上新建了一个名为origin(也可以叫别的名)的远程仓库
+            接下来,就可以把本地仓库的所有内容推送到远程库上了
 
+        [两者的区别]--->实际上，Git支持多种协议，默认的git://使用ssh，但也可以使用https等其他协议。
+                        使用https除了速度慢以外，还有个最大的麻烦是每次推送都必须输入口令，但是在
+                        某些只开放http端口的公司内部就无法使用ssh协议而只能用https。
+         
         c.git push -u origin master 这样就把本地库的内容推送到了远程上(实际上是把当前分支master推送到远程)
           [注意]--->由于远程库是空的,所以第一次推送master分支时,加上了-u参数,这样Git不但
                     把本地master分支内容推送到远程新的master分支,还会把本地的master分支
@@ -138,4 +143,14 @@
                 2.关联后,使用命令git push -u origin master 第一次推送,此后每次本地提交后
                   使用命令 git push origin master 就可以了.
 
+    3.从远程库克隆
 
+        a.首先登陆GitHub创建一个名为gitskills的远程库,然后在终端用命令 git clone git@...(地址名),即可以把
+          远程库里的文件克隆到本地,接下来就可以进入本地gitskills里去查看克隆过来的文件了.
+
+    [小结]--->要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
+              Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快。
+
+七.分支管理
+
+    1.
