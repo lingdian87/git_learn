@@ -66,10 +66,13 @@
           [3]>> commit id   版本所对应的commit id 号. 
 
 
-[总结]>>>  git log 可以查看提交历史,以便确定要回退到哪个版本.
+[总结]--->1.git log 可以查看提交历史,以便确定要回退到哪个版本.
 
-           git reflog  查看命令历史(主要是查看当前库里各版本的commit id号,以便确定回到未来的哪个版本)
-
+          2.git reflog  查看命令历史(主要是查看当前库里各版本的commit id号,以便确定回到未来的哪个版本)
+  
+          3.gitk--->图形化工具查阅读提交历史,基本相当于git log命令的可视化版本.
+            在项目工作目录中输入gitk命令后,就会启动图形界面:
+                上半个窗口显示的是历次提交的分支祖先图谱,下半个窗口显示当前点选的提交对应的具体差异.
 
 [思考]>>>  如何用git管理多个文件(例如需要管理两部不同的小说A和B)的问题?
 
@@ -105,51 +108,57 @@
      
      (实质上,git checkout 使用版本库里的版本替换工作区的版本)
 
-六.远程仓库
+六.[尤其重要]----->远程仓库
 
     1.初识 GitHub :
         
         a.创建SSH Key(GitHub注册略过):首先在用户主目录下查看有无.ssh目录,如果有,        
-        再看看目录下有无 id_rsa 和id_rsa.pub 这两个文件,如果已经有了,
+        再看看目录下有无 id_rsa(私钥) 和id_rsa.pub(公钥) 这两个文件,如果已经有了,
         可直接跳到下一步;如果没有,则在终端输入命令: ssh-keygen -t rsa -C "youremail@example.com"
-        然后一路回车,使用默认值即可(可以无需设置密码)
+        然后一路回车,使用默认值即可(可以无需设置密码,因为毕竟没那个必要)
 
         b.登陆GitHub,add ssh key,并在key文本框里粘帖id_rsa_pub文件的内容,完成这些内容以后
         就可以开始远程仓库的学习了.
+        [小结]--->之所以要创建SSH,是因为GitHub需要识别出你推送的提交确实是本人推送的,如果你有若干
+              电脑,一会儿在公司提交,一会儿在家里提交,只需要把每台电脑的Key都添加到GitHub上就可以了.
 
     2.添加远程仓库
 
         a.首先登陆GitHub,然后在右上角找到"Create a new repo"按钮,创建一个新的仓库:
           
-        b.在本地仓库git_learn(一定要在本地仓库目录下,否则会报错)运行命令:
-            git remote add origin git@github.com:lingdian87/git_learn.git
-            或者也可以用https://github.com/lingdian87/git_learn.git(这个是GitHub下的地址名)
-            这个命令的作用是:在GitHub上新建了一个名为origin(也可以叫别的名)的远程仓库
-            接下来,就可以把本地仓库的所有内容推送到远程库上了
-
-        [两者的区别]--->实际上，Git支持多种协议，默认的git://使用ssh，但也可以使用https等其他协议。
-                        使用https除了速度慢以外，还有个最大的麻烦是每次推送都必须输入口令，但是在
-                        某些只开放http端口的公司内部就无法使用ssh协议而只能用https。
-         
-        c.git push -u origin master 这样就把本地库的内容推送到了远程上(实际上是把当前分支master推送到远程)
-          [注意]--->由于远程库是空的,所以第一次推送master分支时,加上了-u参数,这样Git不但
+        b.在本地仓库git_learn(想要把哪个本地仓库提交到远程,则在该仓库目录下)运行命令:git remote add [shortname] [url]
+         ----> 添加一个新的名为shortname的远程仓库到url所示的地址下
+         接下来,就可以把本地仓库的所有内容推送到远程库上了
+        
+        c.git push -u origin master 这样就把本地库的内容推送到了远程上(实际上是把当前分支master推
+          送到远程分支origin上)
+          [说明]--->1.由于远程库是空的,所以第一次推送master分支时,加上了-u参数,这样Git不但
                     把本地master分支内容推送到远程新的master分支,还会把本地的master分支
                     和远程的master分支关联起来,以后的推送或拉取时就可以简化命令.
-        从现在起,只要本地做了提交(git commit),就可以通过 git push origin ma 把本地
-        master分支的最新修改推送到GitHub.
+                    从现在起,只要本地做了提交(git commit),就可以通过 git push origin master把本地
+                    master分支的最新修改推送到GitHub.
+                    2.第一次使用Git的clone或者push命令连接GitHub时会得到一个警告,警告是为了验证服务器的Key
+                      输入yes就可以了---->这个警告只会出现一次.
 
-      [小结]--->1.要关联一个远程库,用命令 git remote add origin 远程库名(一个地址)
+      [小结]--->1.要添加一个新的远程库,用命令 git remote add [shortname]  [url]
 
-                2.关联后,使用命令git push -u origin master 第一次推送,此后每次本地提交后
-                  使用命令 git push origin master 就可以了.
+                2.远程库建立好了以后,可以使用命令git push -u origin master 将本地库推送到远程库,因为是第一次推送,所以用了-u(表示不仅推送本地到远程库,还将本地master与远程库管理起来)
+                以后再次本地提交,使用命令 git push origin master 就可以了.
 
     3.从远程库克隆
 
         a.首先登陆GitHub创建一个名为gitskills的远程库,然后在终端用命令 git clone git@...(地址名),即可以把
           远程库里的文件克隆到本地,接下来就可以进入本地gitskills里去查看克隆过来的文件了.
 
-    [小结]--->要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
+    [总结]--->要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令克隆。
               Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快。
+
+[特别补充]-->1. git remote 查看当前配置有哪些远程仓库:进入到工作目录以后,输入git remote,会列出
+每个远程库的简短名字
+                [有用的]---->git remote -v(verbose的简写)会显示对应的克隆地址,以便于轻松地从这些用户的仓库中拉取他们的提交到本地.
+
+             2.
+
 
 七.分支管理
 
