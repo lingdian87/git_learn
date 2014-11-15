@@ -201,7 +201,7 @@
             2.不要对提交过的分支进行rebase,能用merge就尽量不用rebase.
             3.merge合并后commit历史是一个环状图,看起来比较繁琐,但是有详细的提交历史,便于查看改错;rebase合并后commit历史是一个线状图,
               看起来更简洁,但是有风险(因为合并的同时丢掉了提交历史,不便于查错).
-            
+            4.总的来说,rebase更温柔一点,会一步一步提交,遇到冲突会提示解决,然后继续;而merge更粗暴一点,不论什么,直接合并.
     2.解决冲突:如果master分支和[name]分支各自都分别有新的提交,此时用 git merge 合并分支就会产生冲突.
     
     --->a. git merge [name]会提示有冲突,此时必须首先解决冲突
@@ -264,4 +264,44 @@
                建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
 
                从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+         [重要]---> git fetch 与 git pull 的区别:
+
+              git fetch origin master:tem   先抓取远程库最新的内容到本地库
+              git diff tem                  然后在比较两者间的差别(有冲突的话需要手动修改)
+              git merge tem                 最后再合并
+
+
+              git pull 相当于把 git fetch 和 git merge 一起完成了
+
+        综上,git fetch更安全一些,在merge前可以查看不同的情况,再决定是否合并;git pull 更快速一点,但存在风险.
+
+
+七.标签管理--->标签其实就是指向某个commit的指针,与分支不同,标签不能移动,一旦建立就固定的指向某个commit.
+
+    1.创建标签: 命令参数和格式与buanch remote 很像.
+
+        git tag [name]    创建一个标签
+          
+            --->可以用 git tag [name] -m "指定标签信息"
+
+        git tag      查看当前库下所有标签
+
+        git tag [name] [commit_id]   给历史上的某个commit(由commit_id指定)创建标签
+
+        git show [tag_name]  显示某个标签的详细信息
+
+    2.操作标签:
+
+        git tag -d <tagname>  可以删除一个本地标签
+
+           --->如果要删除一个远程标签分两步:首先,删除本地标签    git tag -d <tagname>  
+        
+               然后,再删除远程标签  git push origin :refs/tags/<tagname>
+
+        git push origin <tagname>可以推送一个本地标签；
+
+        git push origin --tags可以推送全部未推送过的本地标签；
+
+        
 
