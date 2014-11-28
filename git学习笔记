@@ -5,11 +5,11 @@
    1.可以先输入 git,看系统有无安装git.如果没有安装,则输入  sudo apt-get install git 进行安装.
 
    2.安装完成后,还需要最后一步设置,在命令行输入:
-       git config --global user .name "your name"
+       git config --global user.name "your name"
        
-       git config --global user .name "emaill@exapmle.com"
+       git config --global user.name "emaill@exapmle.com"
 
-       [注意]>>>这个地方必须要设置,后面才能使用.
+       [注意]>>>这个地方必须要设置,后面才能使用[user.name 中間沒有空格]
 
 二.创建版本库并添加文件到版本库
 
